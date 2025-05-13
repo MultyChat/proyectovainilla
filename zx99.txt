@@ -1,0 +1,40 @@
+index.js
+- eliminado temporizador en tarjetas
+- Agregado Disponibles hoy
+
+index.html
+- eliminado filtro de búsqueda
+- Agregado Disponibles hoy
+
+indexStyle.css 
+-
+- Agregado Disponibles hoy 
+
+/SaleUnPartido/
+│
+├── 📄 index.html             ← Página principal con lista de juegos y cronómetro
+├── 📄 login.html             ← Página de inicio de sesión (email y Google)
+├── 📄 profile.html           ← Perfil de usuario (con imagen y datos)
+├── 📄 form.html              ← Formulario emergente para agregar juegos
+├── 📄 groups.html            ← Página para ver y crear grupos
+├── 📄 main.html              ← Estructura base de navegación (posible plantilla reutilizable)
+│
+├── 📄 supabase-config.js     ← Conexión a Supabase (url + key)
+│
+├── 📁 Estilos CSS
+│   ├── indexStyle.css       ← Estilos generales y tarjetas de juegos
+│   ├── loginStyle.css       ← Estilos con fondo oscuro y líneas animadas (login)
+│   ├── navStyle.css         ← Estilos de la barra de navegación
+│   ├── profileStyle.css     ← Estilos de perfil de usuario
+│   ├── formStyle.css        ← Estilos del formulario de partidos emergente
+│   ├── groups.css           ← Estilo complementario de grupos (ligero)
+│
+├── 📁 Scripts JS
+│   ├── index.js             ← Gestión de juegos (crear, editar, unir, tiempo restante)
+│   ├── login.js             ← Lógica de login, Google OAuth y sesión
+│   ├── profile.js           ← Cargar, editar y guardar perfil (incluye imagen)
+│   ├── form.js              ← Carga y lógica del formulario emergente
+│   ├── groups.js            ← Crear grupo, listar grupos y unirse
+│
+├── 📁 Assets
+│   └── profile.jpg          ← Imagen de perfil por defecto

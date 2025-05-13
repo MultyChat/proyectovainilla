@@ -1,0 +1,112 @@
+/* Barra de navegación */
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 10px;
+  background-color: #1e1e1e;
+  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.4);
+  position: fixed;
+  bottom: 0; /* 👇 En vez de top */
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 65px;
+  border-top: 1px solid #333;
+}
+
+/* Loader de pantalla completa */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #121212; /* fondo oscuro, consistente con tu app */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Spinner animado */
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 8px solid #e0e0e0;
+  border-top: 8px solid #28a745; /* Verde de tu app */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animación de giro */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+  
+/* Contenedor de los íconos de navegación */
+.nav-icons {
+  display: flex;
+  gap: 20px;
+}
+
+/* Estilo de los íconos */
+.nav-container i {
+  font-size: 24px;
+  color: #ccc;
+  padding: 8px;
+  transition: color 0.3s ease;
+}
+
+.nav-container i:hover {
+  color: #28a745;
+}
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Imagen de perfil en la barra */
+.nav-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+  
+  /* Contenedor de perfil y cerrar sesión */
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}  
+  /* Imagen de perfil */
+.profile-container img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+  
+  /* Botón de cerrar sesión */
+#logout-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+  
+#logout-btn i {
+    font-size: 16px;
+}
+  
+#logout-btn:hover {
+    color: red;
+}  

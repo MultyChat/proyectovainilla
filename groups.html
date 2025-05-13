@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grupos</title>
+  <link rel="stylesheet" href="indexStyle.css">
+    <link rel="stylesheet" href="navStyle.css">
+    <link rel="stylesheet" href="formStyle.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<!-- Loader inicial -->
+<div id="loader" class="loader">
+  <div class="spinner"></div>
+</div>
+
+  <!-- Barra de navegación -->
+  <div class="nav-container">
+    <i class="fa-solid fa-house" id="home-icon"></i>
+    <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+    <i class="fas fa-users" id="group-icon"></i>
+    <i class="fa-solid fa-bell" id="notification-icon"></i>
+    <div class="profile-container">
+      <a href="profile.html" id="profile-link">
+        <img src="profile.jpg" alt="Perfil" id="profile-icon">
+    </a>    
+      <button id="logout-btn">
+        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Mis Grupos</h2>
+    <button id="create-group-btn">➕ Crear Grupo</button>
+    <div id="groups-container"></div>
+  </div>
+
+  <!-- Modal flotante de grupo -->
+<div id="group-modal" class="modal hidden">
+  <div class="modal-content">
+    <!-- Switch -->
+    <div class="switch-wrapper">
+      <button id="switch-chats" class="active-switch">💬 Chats</button>
+      <button id="switch-members">👥 Miembros</button>
+    </div>
+
+    <!-- Contenido dinámico -->
+    <div id="modal-body">
+      <!-- Se llena dinámicamente con JS -->
+    </div>
+
+    <!-- Botón cerrar -->
+    <button id="close-modal" style="margin-top: 20px;">Cerrar</button>
+  </div>
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="groups.js"></script>
+
+  <!-- Modal del Grupo -->
+<div id="group-modal" class="hidden">
+  <div class="modal-content">
+    <div class="switches">
+      <button id="switch-chats" class="active-switch">Chats</button>
+      <button id="switch-members">Miembros</button>
+    </div>
+    <div id="modal-body"></div>
+    <button id="close-modal">Cerrar</button>
+  </div>
+</div>
+
+
+</body>
+</html>

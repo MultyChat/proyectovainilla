@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil de Usuario</title>
+  <link rel="stylesheet" href="profileStyle.css">
+  <link rel="stylesheet" href="navStyle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <!-- Loader inicial -->
+<div id="loader" class="loader">
+  <div class="spinner"></div>
+</div>
+
+  <!-- Barra de navegación -->
+<div class="nav-container">
+  <i class="fa-solid fa-house" id="home-icon"></i>
+    <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+    <i class="fas fa-users" id="group-icon"></i>
+    <i class="fa-solid fa-bell" id="notification-icon"></i>
+  <div class="nav-profile">
+      <a href="profile.html" id="profile-link">
+          <img src="profile.jpg" alt="Perfil" id="profile-icon">
+      </a>
+      <button id="logout-btn">
+        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+  </div>
+</div>
+
+<!-- Contenedor del perfil -->
+<div class="profile-container">
+  <h2>Perfil de Usuario</h2>
+
+  <!-- Foto de perfil -->
+  <div class="profile-image">
+    <img id="avatar" src="profile.jpg" alt="Foto de Perfil">
+    <label for="avatar-upload" class="upload-icon">
+        <i class="fa-solid fa-paperclip"></i>
+    </label>
+    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+  </div>
+
+
+  <!-- Datos del perfil -->
+  <form id="profile-form" style="margin-top: 0px;">
+    <input type="text" id="username" placeholder="Nombre" required>
+    <input type="text" id="phone-number" placeholder="Número de Teléfono">
+
+    <select id="gender-category">
+      <option disabled selected>Categoría</option>
+      <option value="masculino">Masculino</option>
+      <option value="femenino">Femenino</option>
+      <option value="mixto">Mixto</option>
+    </select>
+    
+    <select id="age-category">
+      <option disabled selected>Edad</option>
+      <option value="+18">Adulto (+18)</option>
+      <option value="+30">Senior (+30)</option>
+      <option value="+50">Super Senior (+50)</option>
+    </select>    
+    
+    <label></label>
+    <button type="button" id="toggle-sports-btn" style="margin-bottom: 10px;">Deportes Favoritos</button>   
+    <div id="favorite-sports-checkboxes" class="sports-checkboxes hidden">
+  <label><input type="checkbox" value="Fútbol"> Fútbol</label>
+  <label><input type="checkbox" value="Pádel"> Pádel</label>
+  <label><input type="checkbox" value="Básquetbol"> Básquetbol</label>
+  <label><input type="checkbox" value="Voleibol"> Voleibol</label>
+  <label><input type="checkbox" value="Handbol"> Handbol</label>
+  <label><input type="checkbox" value="Tenis"> Tenis</label>
+  <label><input type="checkbox" value="Rugby"> Rugby</label>
+  <label><input type="checkbox" value="Hockey"> Hockey</label>
+  <label><input type="checkbox" value="Béisbol"> Béisbol</label>
+  <label><input type="checkbox" value="Ping-Pong"> Ping-Pong</label>
+</div>
+
+      <label>
+          <input type="checkbox" id="notifications-enabled">
+          Recibir notificaciones
+      </label>
+      <button type="submit">Guardar Cambios</button>
+  </form>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

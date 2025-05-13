@@ -1,0 +1,181 @@
+/* Ocultar formulario por defecto */
+.hidden {
+  display: none !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#toggle-advanced-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+#toggle-advanced-btn:hover {
+  background-color: #0056b3;
+}
+
+
+/* Contenedor del formulario */
+#form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  bottom: -20%;
+  transform: translate(-50%, -50%);
+  background: #1e1e1e; /* Fondo oscuro, mismo de tarjetas */
+  padding: 10px;
+  padding-bottom: 30px; 
+  border: 2px solid white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: min(90%, 350px); /* Se adapta a móviles y escritorio */
+  max-height: 80vh; /* Menos alto */
+  min-height: auto; /* Ajustable según el contenido */
+  overflow-y: auto; /* Scroll si el contenido es largo */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+  /* Ajustes en dispositivos móviles */
+  @media (max-width: 500px) {
+    #form-container {
+      max-height: 85vh;
+      width: 95%;
+      padding: 12px;
+    }
+  }
+  
+  /* Diseño del formulario */
+  #game-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Menos separación entre campos */
+    width: 100%;
+  }
+    /* Asegurar que todos los inputs tengan el mismo tamaño */
+  input, select, button {
+      text-align: center;
+      height: 42px; /* Misma altura */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  /* Normalización del tamaño de input y select */
+  input, select {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    height: 42px; /* Altura uniforme */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    font-size: 14px;
+    background-color: #2c2c2c;
+    color: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* Evita que el padding cambie el tamaño */
+  }
+
+  /* Solución específica para input tipo date y time */
+  input[type="date"], input[type="time"] {
+    appearance: none; /* Oculta el estilo por defecto del navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 12px; /* Ajuste para el ícono */
+  }
+
+  /* Evitar problemas en Safari */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); /* Ajuste de color del icono */
+    cursor: pointer; /* Asegurar que sea clickeable */
+    padding-right: 10px;
+    text-align: center;
+    text-align-last: center;
+  }
+  
+  input:focus, select:focus {
+    border: 1px solid #28a745;
+    background-color: white;
+    color: black;
+    outline: none;
+  }
+  
+  /* Botón de enviar */
+  button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #218838;
+  }
+  
+  /* Botón de cerrar formulario */
+  .close-btn {
+    background-color: red;
+    color: white;
+  }
+  
+  .close-btn:hover {
+    background-color: darkred;
+  }
+  
+  /* Estilo de la alerta de éxito */
+.success-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animación para la alerta */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🔥 Estilo para switch en Configuración Avanzada */
+.advanced-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+select option {
+  text-align: center;
+}
+
+select option[disabled] {
+  color: #888;
+}
+
+.form-title {
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 22px;
+}

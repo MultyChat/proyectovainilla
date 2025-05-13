@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="formStyle.css">
+</head>
+<body>
+  <!-- Formulario para agregar un nuevo juego -->
+  <div id="form-container" class="hidden">
+    <form id="game-form">
+      <h2 class="form-title">Partido</h2>
+
+      <input type="text" id="sports-center" placeholder="Centro Deportivo" list="sports-centers-list" required>
+      <datalist id="sports-centers-list"></datalist>
+
+      <select id="sport-type">
+      <option disabled selected>Tipo de Deporte</option>
+        <option>Fútbol</option>
+        <option>Fútbol 6</option>
+        <option>Fútbol 7</option>
+        <option>Futsal</option>
+        <option>Básquetbol</option>
+        <option>Voleibol</option>
+        <option>Handbol</option>
+        <option>Hockey</option>
+        <option>Tenis</option>
+        <option>Pádel</option>
+        <option>Rugby</option>
+      </select>
+
+      <input type="date" id="game-date" placeholder="Fecha" required>
+
+      <input type="time" id="game-time" placeholder="Hora" required>
+
+      <input type="number" id="player-count" placeholder="Cantidad de Jugadores" required min="1">
+
+      <input type="number" id="game-value" placeholder="Valor ($)" required>
+
+            <!-- Botón para alternar configuración avanzada -->
+      <button type="button" id="toggle-advanced-btn">⚙️ Configuración Avanzada</button>
+
+      <!-- Campos avanzados (inicialmente ocultos) -->
+      <div id="advanced-settings" class="hidden">
+        <select id="sport-category" required>
+          <option disabled selected>Categoría</option>
+          <option value="masculino">Masculino</option>
+          <option value="femenino">Femenino</option>
+          <option value="mixto">Mixto</option>
+          <option value="capacidades_diferentes">Capacidades Diferentes</option>
+        </select>
+
+        <select id="field-number">
+          <option disabled selected>Cancha</option>
+          <option>Cancha 1</option>
+          <option>Cancha 2</option>
+          <option>Cancha 3</option>
+          <option>Cancha 4</option>
+          <option>Cancha 5</option>
+          <option>Cancha 6</option>
+        </select>
+
+        <select id="game-level" required>
+          <option disabled selected>Nivel</option>
+          <option value="principiante">Principiante</option>
+          <option value="amistoso">Amistoso</option>
+          <option value="competitivo">Competitivo</option>
+        </select>
+
+        <select id="game-visibility">
+          <option value="public">Público</option>
+          <option value="private">Privado</option>
+        </select>
+
+        <select id="confirmed-hour">
+          <option disabled selected>Hora Confirmada</option>
+          <option value="true">Confirmada</option>
+          <option value="false">No Confirmada</option>
+        </select>
+      </div>   
+      <button type="submit">Agregar Juego</button>
+      <button type="button" id="close-form-btn" class="close-btn">Cancelar</button>
+    </form>
+  </div>
+</body>
+</html>

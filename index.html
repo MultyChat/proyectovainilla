@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balong</title>
+    <link rel="stylesheet" href="indexStyle.css">
+    <link rel="stylesheet" href="navStyle.css">
+    <link rel="stylesheet" href="formStyle.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<!-- Loader inicial -->
+<div id="loader" class="loader">
+  <div class="spinner"></div>
+</div>
+
+<div id="available-modal" class="hidden modal">
+  <div class="modal-content">
+    <h2>Jugadores Disponibles</h2>
+    <ul id="available-list"></ul>
+    <button id="close-available-modal" style="margin-top: 15px; background: #dc3545;">Cerrar</button>
+  </div>
+</div>
+
+<!-- Contador de usuarios disponibles -->
+<div class="status-row">
+  <div class="status-box" id="location-box">
+    <p><i class="fa-solid fa-location-dot" style="color: #007bff;"></i> <span id="user-location">Detectando...</span></p>
+  </div>
+  <div class="status-box" id="available-counter" title="Haz clic para cambiar tu estado de disponibilidad">
+    <p><i class="fa-solid"></i> 🍪Galletas: <span id="available-count">0</span></p>
+  </div>
+  <button id="show-available-btn" style="padding: 10px 15px; border: none; cursor: pointer;">👥 Ver</button>
+</div>
+  
+<!-- Contenedor de "Mis Juegos" y "Juegos Creados" -->
+<div class="custom-tabs">
+  <button class="tab-item active-tab" id="tab-joined">
+    <i class="fa-solid fa-calendar-check"></i>
+    <span>Mis Partidos</span>
+  </button>
+  <button class="tab-item" id="tab-created">
+    <i class="fa-solid fa-futbol"></i>
+    <span>Partidos Creados</span>
+  </button>
+  <button class="tab-item" id="add-game-btn-top">
+    <i class="fa-solid fa-plus"></i>
+    <span>Crear</span>
+  </button>
+</div>
+
+<!-- Contenedor SEPARADO para las tarjetas de partidos -->
+<div id="games-view">
+  <div id="joined-games-list" class="games-list"></div>
+  <div id="created-games-list" class="games-list hidden"></div>
+</div>
+
+<!-- NUEVO: Carrusel de Centros Deportivos -->
+<div class="sportscenters-section">
+  <h2 class="sportscenter-title">Sugerencias</h2>
+  <div id="sportscenters-list" class="sportscenters-container">
+    <!-- Tarjetas de centros se insertarán aquí -->
+  </div>
+</div>
+
+  <!-- Barra de navegación -->
+  <div class="nav-container">
+    <i class="fa-solid fa-house" id="home-icon"></i>
+    <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+    <i class="fas fa-users" id="group-icon"></i>
+    <i class="fa-solid fa-bell" id="notification-icon"></i>
+    <div class="profile-container">
+      <a href="profile.html" id="profile-link">
+        <img src="profile.jpg" alt="Perfil" id="profile-icon">
+    </a>    
+      <button id="logout-btn">
+        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+    </div>
+  </div>
+
+<!-- Modal para editar juego -->
+<div id="edit-modal" class="hidden">
+  <form id="edit-game-form">
+    <h2 class="edit-title">Editar Juego</h2>
+    <input type="text" id="edit-sports-center" required>
+    <select id="edit-sport-type">
+      <option>Fútbol</option>
+      <option>Básquetbol</option>
+      <option>Voleibol</option>
+      <option>Handbol</option>
+    </select>
+    <input type="date" id="edit-game-date" required>
+    <input type="time" id="edit-game-time" required>
+    <input type="number" id="edit-player-count" required min="1">
+    <input type="number" id="edit-game-value" required>
+    <button type="submit">Guardar Cambios</button>
+    <button type="button" id="close-edit-btn">Cancelar</button>
+  </form>
+</div>
+
+
+<div id="sports-icons" class="sports-icon-row"></div>
+
+<!-- Contenedor para las tarjetas de juegos -->
+<div id="games-container"></div>
+
+  <!-- Contenedor de Juegos -->
+  <div id="games-sections">
+    <div id="today-games" class="games-group">
+      <h2>Hoy</h2>
+      <div class="games-container"></div>
+    </div>
+  
+    <div id="tomorrow-games" class="games-group">
+      <h2>Mañana</h2>
+      <div class="games-container"></div>
+    </div>
+  </div>
+
+<!-- Modal de jugadores -->
+<div id="players-modal" class="hidden">
+  <div class="modal-content">
+        <!-- Botón cerrar en la esquina -->
+        <button id="close-players-modal" class="modal-close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    <!-- 📌 INFO DEL PARTIDO -->
+    <div id="game-info" style="text-align: left; margin-bottom: 15px;">
+      <p><strong>📍</strong> <span id="modal-sportscenter"></span></p>
+      <p><strong>🗓</strong> <span id="modal-date"></span></p>
+      <p><strong>🕒</strong> <span id="modal-time"></span></p>
+      <p><strong>🔒</strong> <span id="modal-visibility"></span></p>
+      <p><strong>👥</strong> <span id="modal-players-count"></span></p>
+      <p id="modal-category-wrapper"><strong>🏷️</strong> <span id="modal-category"></span></p>
+      <p id="modal-field-wrapper"><strong>🏟️</strong> <span id="modal-field"></span></p>
+      <p id="modal-level-wrapper"><strong>📶</strong> <span id="modal-level"></span></p>
+      <p id="modal-confirmed-wrapper"><strong>⏱ Hora Confirmada:</strong> <span id="modal-confirmed"></span></p>
+    </div>
+
+    <!-- Equipos -->
+    <div style="display: flex; gap: 20px; justify-content: center;">
+      <div style="text-align: center;">
+        <h3>Equipo A</h3>
+        <div class="jersey-picker">
+          <div class="jersey" id="jersey-a"></div>
+          <input type="color" id="color-picker-a" value="#007bff">
+        </div>
+        <ul id="team-a-list"></ul>
+      </div>
+      <div style="text-align: center;">
+        <h3>Equipo B</h3>
+        <div class="jersey-picker">
+          <div class="jersey" id="jersey-b"></div>
+          <input type="color" id="color-picker-b" value="#dc3545">
+        </div>
+        <ul id="team-b-list"></ul>
+      </div>
+    </div>    
+  </div>
+</div>
+
+  <!-- Modal para elegir deporte -->
+<div id="sport-modal" class="hidden sport-modal">
+  <div class="sport-modal-content">
+    <h3>¿Qué deporte quieres jugar hoy?</h3>
+    <select id="sport-select">
+      <option disabled selected>Selecciona un deporte</option>
+      <option value="futbol">⚽ Fútbol</option>
+      <option value="basquetbol">🏀 Básquetbol</option>
+      <option value="voleibol">🏐 Voleibol</option>
+      <option value="handbol">🤾 Handbol</option>
+      <option value="tenis">🎾 Tenis</option>
+      <option value="padel">🏓 Pádel</option>
+      <option value="rugby">🏉 Rugby</option>
+      <option value="otro">❓ Otro</option>
+    </select>
+    <button id="confirm-sport-btn">Confirmar</button>
+    <button id="unconfirm-sport-btn" style="background-color:#ffc107; color:black;">Desconfirmar</button>
+    <button id="cancel-sport-btn">Cancelar</button>
+  </div>
+</div>
+
+<!-- Imagen informativa -->
+<div class="info-cards-container">
+  <!-- Tarjeta 1 -->
+  <div class="info-card">
+    <img src="imagenes/canchas/Publicidad-Grupos.png" alt="Juega con tu equipo">
+    <h3>Juega con tu equipo</h3>
+    <p>Organiza partidos, encuentra clubes y reúne a tu grupo cada día</p>
+  </div>
+
+  <!-- Tarjeta 2 -->
+  <div class="info-card">
+    <img src="imagenes/canchas/Publicidad-Encuentra Partidos.png" alt="Información 2">
+    <h3>Encuentra partidos</h3>
+    <p>Explora centros deportivos y encuentra partidos disponibles en tu zona</p>
+  </div>
+
+  <!-- Tarjeta 3 -->
+  <div class="info-card">
+    <img src="imagenes/canchas/Publicidad-Centros Deportivos.png" alt="Información 3">
+    <h3>Añade tu Centro Deportivo</h3>
+    <p>Haz visible tu cancha, recibe reservas y únete a la comunidad deportiva</p>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="index.js"></script>
+  <script src="form.js"></script>
+</body>
+</html>

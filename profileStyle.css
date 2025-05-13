@@ -1,0 +1,194 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding-top: 20px; /* Ajuste para evitar que la barra de navegación tape el contenido */
+  padding-bottom: 110px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Contenedor principal */
+.main-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Estilos del perfil */
+.profile-container {
+  background: white;
+  padding: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 350px;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Imagen de perfil */
+.profile-image img {
+  width: 100px !important; /* 🔹 Ajustar tamaño del contenedor */
+  height: 100px !important;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 25px;
+}
+
+/* Contenedor de la imagen de perfil */
+.profile-image {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilo del ícono de clip */
+.upload-icon {
+  position: absolute;
+  bottom: 10px;
+  left: 25px;
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+#username,
+#phone-number {
+  width: 92%;
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 10px;
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 8px;
+  display: block; /* Esto es importante para que el "margin: auto" funcione */
+  font-size: 14px;
+}
+
+
+/* Estilo directo a los selectores */
+#gender-category,
+#age-category {
+  display: block;
+  width: 100%;
+  margin: 8px auto; /* centrado horizontal */
+  padding: 10px;
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 8px;
+  font-size: 14px;
+  align-items: center;
+}
+
+/* Estilo del checkbox con label */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 80%;
+  margin: 8px auto;
+  padding: 10px 15px;
+  background-color: #2c2c2c;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+
+/* Efecto hover */
+.upload-icon:hover {
+  background: #000000;
+}
+
+input[type="file"] {
+  display: block;
+  margin: auto;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #000000;
+}
+
+#toggle-sports-btn {
+  background-color: #000000;
+  color: white;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 10px auto;
+}
+
+#toggle-sports-btn:hover {
+  background-color: #218838;
+}
+
+
+#favorite-sports-container.hidden {
+  display: none;
+}
+
+#favorite-sports {
+  height: 100px;
+  overflow-y: auto;
+}
+
+.sports-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.sports-checkboxes label {
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.sports-checkboxes input[type="checkbox"] {
+  margin-right: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#profile-form {
+  margin-top: 30px;
+  margin-right: 10px;
+}
