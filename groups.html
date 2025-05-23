@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Grupos</title>
   <link rel="stylesheet" href="indexStyle.css">
+  <link rel="stylesheet" href="groups.css">
     <link rel="stylesheet" href="navStyle.css">
     <link rel="stylesheet" href="formStyle.css">  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -25,9 +26,9 @@
       <a href="profile.html" id="profile-link">
         <img src="profile.jpg" alt="Perfil" id="profile-icon">
     </a>    
-      <button id="logout-btn">
-        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
+     <button id="logout-btn" class="logout-icon-btn" title="Cerrar sesión">
+  <i class="fa-solid fa-sign-out-alt"></i>
+</button>
     </div>
   </div>
 
@@ -42,6 +43,7 @@
   <div class="modal-content">
     <!-- Switch -->
     <div class="switch-wrapper">
+      <button id="switch-games" class="active-switch">🎯 Partidos</button>
       <button id="switch-chats" class="active-switch">💬 Chats</button>
       <button id="switch-members">👥 Miembros</button>
     </div>
@@ -56,10 +58,12 @@
   </div>
 </div>
 
-
+  <script src="form.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="supabase-config.js"></script>
   <script src="groups.js"></script>
+
+
 
   <!-- Modal del Grupo -->
 <div id="group-modal" class="hidden">

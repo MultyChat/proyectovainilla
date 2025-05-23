@@ -1,3 +1,5 @@
+let selectedSportsOrder = [];
+
 // Cerrar sesión y redirigir a login.html
 document.getElementById('logout-btn').addEventListener('click', async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -8,8 +10,17 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
     }
   });
 
+function showCustomAlert(message) {
+  document.getElementById("custom-alert-message").textContent = message;
+  document.getElementById("custom-alert").classList.remove("hidden");
+}
 
-  document.addEventListener("DOMContentLoaded", async () => {
+function closeCustomAlert() {
+  document.getElementById("custom-alert").classList.add("hidden");
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("📌 Verificando que el DOM está completamente cargado.");
     const urlParams = new URLSearchParams(window.location.search);
     const profileIdFromUrl = urlParams.get("user");
   
@@ -56,7 +67,7 @@ document.getElementById("group-icon").addEventListener("click", () => {
 });
 
 document.getElementById('notification-icon').addEventListener('click', () => {
-  alert("No tienes notificaciones por ahora.");
+  showCustomAlert("No tienes notificaciones por ahora.");
 });
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -77,19 +88,19 @@ document.getElementById('notification-icon').addEventListener('click', () => {
 
         if (searchIcon) {
             searchIcon.addEventListener('click', () => {
-                alert("🔎 Función de búsqueda en desarrollo...");
+                showCustomAlert("🔎 Función de búsqueda en desarrollo...");
             });
         }
 
         if (groupIcon) {
             groupIcon.addEventListener('click', () => {
-                alert("🚧 Función de grupos en desarrollo...");
+                showCustomAlert("🚧 Función de grupos en desarrollo...");
             });
         }
 
         if (notificationIcon) {
             notificationIcon.addEventListener('click', () => {
-                alert("🔔 No tienes notificaciones por ahora.");
+                showCustomAlert("🔔 No tienes notificaciones por ahora.");
             });
         }
 
@@ -110,11 +121,54 @@ document.getElementById('notification-icon').addEventListener('click', () => {
   // Rellena el formulario
   document.getElementById("username").value = data.username || "";
   document.getElementById("phone-number").value = data.phone_number || "";
-  const favSports = data.favorite_sports || [];
+const favSports = data.favorite_sports || [];
+const checkboxes = document.querySelectorAll('#favorite-sports-checkboxes input[type="checkbox"]');
+
+// 🧠 Restauramos el orden al entrar al perfil
+selectedSportsOrder = [...favSports];
+
+checkboxes.forEach(chk => {
+  chk.checked = favSports.includes(chk.value);
+
+  chk.addEventListener("change", () => {
+    const value = chk.value;
+    if (chk.checked) {
+      if (!selectedSportsOrder.includes(value)) {
+        selectedSportsOrder.push(value);
+      }
+    } else {
+      selectedSportsOrder = selectedSportsOrder.filter(s => s !== value);
+    }
+    actualizarNumeracionVisual(); // 👈 Llama a función para mostrar #n
+  });
+});
+
+actualizarNumeracionVisual(); // Mostramos al cargar
+
+function actualizarNumeracionVisual() {
   const checkboxes = document.querySelectorAll('#favorite-sports-checkboxes input[type="checkbox"]');
   checkboxes.forEach(chk => {
-    chk.checked = favSports.includes(chk.value);
+    const label = chk.parentElement;
+    let badge = label.querySelector(".badge-order");
+
+    const index = selectedSportsOrder.indexOf(chk.value);
+
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.classList.add("badge-order");
+      badge.style.color = "green";
+      badge.style.marginLeft = "6px";
+      label.appendChild(badge);
+    }
+
+    if (chk.checked && index >= 0) {
+      badge.textContent = `#${index + 1}`;
+    } else {
+      badge.textContent = "";
+    }
   });
+}
+
   document.getElementById("gender-category").value = data.gender_category || "";
   document.getElementById("age-category").value = data.age_category || "";
   document.getElementById("notifications-enabled").checked = data.notifications_enabled || false;
@@ -159,8 +213,7 @@ document.getElementById('notification-icon').addEventListener('click', () => {
     const isOwnProfile = userId === user.id;
     const username = document.getElementById("username").value;
     const phoneNumber = document.getElementById("phone-number").value;
-    const checked = document.querySelectorAll('#favorite-sports-checkboxes input[type="checkbox"]:checked');
-    const favoriteSports = Array.from(checked).map(chk => chk.value);    
+    const favoriteSports = selectedSportsOrder;
 
     const notificationsEnabled = document.getElementById("notifications-enabled").checked;
 
@@ -196,7 +249,7 @@ document.getElementById('notification-icon').addEventListener('click', () => {
     if (error) {
         console.error("❌ Error al actualizar perfil:", error.message);
     } else {
-        alert("✅ Perfil actualizado correctamente.");
+        showCustomAlert("✅ Perfil actualizado correctamente.");
     }
 });
 

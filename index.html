@@ -15,6 +15,15 @@
   <div class="spinner"></div>
 </div>
 
+<!-- Alerta personalizada -->
+<div id="custom-alert" class="hidden">
+  <div class="custom-alert-content">
+    <h3>⚠️</h3>
+    <p id="custom-alert-message"></p>
+    <button onclick="closeCustomAlert()">Aceptar</button>
+  </div>
+</div>
+
 <div id="available-modal" class="hidden modal">
   <div class="modal-content">
     <h2>Jugadores Disponibles</h2>
@@ -64,6 +73,24 @@
   </div>
 </div>
 
+<!-- Modal para centros deportivos -->
+<div id="center-modal" class="hidden sport-modal">
+  <div class="sport-modal-content">
+    <button id="center-close-btn" class="center-close-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    
+    <h3 id="center-modal-name">Centro Deportivo</h3>
+    <p id="center-modal-address"></p>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+      <button id="center-go-btn">📅 Crear Partido</button>
+      <a id="center-call-btn" href="#" target="_blank" style="text-align: center; background-color: #28a745; color: white; padding: 10px; border-radius: 5px; text-decoration: none;">
+        📞 Llamar
+      </a>
+    </div>
+  </div>
+</div>
+
   <!-- Barra de navegación -->
   <div class="nav-container">
     <i class="fa-solid fa-house" id="home-icon"></i>
@@ -74,9 +101,9 @@
       <a href="profile.html" id="profile-link">
         <img src="profile.jpg" alt="Perfil" id="profile-icon">
     </a>    
-      <button id="logout-btn">
-        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
+      <button id="logout-btn" class="logout-icon-btn" title="Cerrar sesión">
+  <i class="fa-solid fa-sign-out-alt"></i>
+</button>
     </div>
   </div>
 
@@ -129,7 +156,7 @@
 
     <!-- 📌 INFO DEL PARTIDO -->
     <div id="game-info" style="text-align: left; margin-bottom: 15px;">
-      <p><strong>📍</strong> <span id="modal-sportscenter"></span></p>
+      <p><i class="fa-solid fa-landmark"></i> <strong><span id="modal-sportscenter"></span></strong></p>
       <p><strong>🗓</strong> <span id="modal-date"></span></p>
       <p><strong>🕒</strong> <span id="modal-time"></span></p>
       <p><strong>🔒</strong> <span id="modal-visibility"></span></p>
@@ -141,24 +168,24 @@
     </div>
 
     <!-- Equipos -->
-    <div style="display: flex; gap: 20px; justify-content: center;">
-      <div style="text-align: center;">
-        <h3>Equipo A</h3>
-        <div class="jersey-picker">
-          <div class="jersey" id="jersey-a"></div>
-          <input type="color" id="color-picker-a" value="#007bff">
-        </div>
-        <ul id="team-a-list"></ul>
-      </div>
-      <div style="text-align: center;">
-        <h3>Equipo B</h3>
-        <div class="jersey-picker">
-          <div class="jersey" id="jersey-b"></div>
-          <input type="color" id="color-picker-b" value="#dc3545">
-        </div>
-        <ul id="team-b-list"></ul>
-      </div>
-    </div>    
+<div class="teams-container">
+  <div class="team-column">
+    <h3>Equipo A</h3>
+    <div class="jersey-color-wrap">
+      <div class="jersey" id="jersey-a"></div>
+      <input type="color" id="color-picker-a" value="#007bff">
+    </div>
+    <ul id="team-a-list" class="team-list"></ul>
+  </div>
+  <div class="team-column">
+    <h3>Equipo B</h3>
+    <div class="jersey-color-wrap">
+      <div class="jersey" id="jersey-b"></div>
+      <input type="color" id="color-picker-b" value="#dc3545">
+    </div>
+    <ul id="team-b-list" class="team-list"></ul>
+  </div>
+</div>
   </div>
 </div>
 
@@ -169,16 +196,18 @@
     <select id="sport-select">
       <option disabled selected>Selecciona un deporte</option>
       <option value="futbol">⚽ Fútbol</option>
+      <option value="futbol7">⚽ Fútbol 7</option>
+      <option value="futbol6">⚽ Fútbol 6</option>
+      <option value="futsal">⚽ Futsal</option>
       <option value="basquetbol">🏀 Básquetbol</option>
       <option value="voleibol">🏐 Voleibol</option>
       <option value="handbol">🤾 Handbol</option>
       <option value="tenis">🎾 Tenis</option>
-      <option value="padel">🏓 Pádel</option>
+      <option value="padel">🎾 Pádel</option>
       <option value="rugby">🏉 Rugby</option>
       <option value="otro">❓ Otro</option>
     </select>
     <button id="confirm-sport-btn">Confirmar</button>
-    <button id="unconfirm-sport-btn" style="background-color:#ffc107; color:black;">Desconfirmar</button>
     <button id="cancel-sport-btn">Cancelar</button>
   </div>
 </div>
@@ -186,10 +215,10 @@
 <!-- Imagen informativa -->
 <div class="info-cards-container">
   <!-- Tarjeta 1 -->
-  <div class="info-card">
-    <img src="imagenes/canchas/Publicidad-Grupos.png" alt="Juega con tu equipo">
-    <h3>Juega con tu equipo</h3>
-    <p>Organiza partidos, encuentra clubes y reúne a tu grupo cada día</p>
+     <div class="info-card">
+    <img src="imagenes/canchas/Publicidad-Centros Deportivos.png" alt="Información 3">
+    <h3>Añade tu Centro Deportivo</h3>
+    <p>Haz visible tu cancha, recibe reservas y únete a la comunidad deportiva</p>
   </div>
 
   <!-- Tarjeta 2 -->
@@ -201,9 +230,9 @@
 
   <!-- Tarjeta 3 -->
   <div class="info-card">
-    <img src="imagenes/canchas/Publicidad-Centros Deportivos.png" alt="Información 3">
-    <h3>Añade tu Centro Deportivo</h3>
-    <p>Haz visible tu cancha, recibe reservas y únete a la comunidad deportiva</p>
+    <img src="imagenes/canchas/Publicidad-Grupos.png" alt="Juega con tu equipo">
+    <h3>Juega con tu equipo</h3>
+    <p>Organiza partidos, encuentra clubes y reúne a tu grupo cada día</p>
   </div>
 </div>
 

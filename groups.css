@@ -1,22 +1,109 @@
-/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    padding-top: 80px; /* 🔹 Espacio para la barra de navegación */
-  }
-  
-  /* Estilos del contenedor principal */
-  .container {
-    max-width: 600px;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1, h2 {
-    text-align: center;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 80px;
+}
+
+/* Tarjeta de grupo coherente con game-card */
+.group-card {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 16px;
+  margin: 15px 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Botones con estilo de app */
+.group-card button {
+  width: 25%; 
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.group-card button:hover {
+  background-color: #218838;
+}
+
+/* Títulos y subtítulos */
+.group-card h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: #ffffff;
+}
+.group-card {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 16px;
+  margin: 20px auto;           /* 👈 Centrado horizontal */
+  width: 50%;                  /* 👈 Solo 50% del ancho */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.group-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #bbbbbb;
+  margin-top: 4px;
+}
+
+
+/* Contenedor principal */
+.container {
+  padding: 10px;
+}
+
+/* Scroll horizontal si hay carruseles de grupos */
+.groups-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
+.groups-container::-webkit-scrollbar {
+  height: 6px;
+  background-color: #0c0c0c;
+}
+.groups-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 3px;
+}
+
+#create-group-btn {
+  margin: 20px auto; 
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px; /* 🎯 Bordes más redondeados */
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#create-group-btn:hover {
+  background-color: #218838; /* 🎯 Cambio sutil de color */
+  transform: translateY(-2px); /* 🎯 Levanta ligeramente el botón */
+}

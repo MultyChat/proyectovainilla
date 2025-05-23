@@ -1,47 +1,41 @@
 let currentGroupId = null;
 let messageChannel = null;
 
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = await supabaseClient.auth.getUser();
+  if (!user.data.user) {
+    window.location.href = "login.html";
+    return;
+  }
 
-
-// Vuelve a home
-document.getElementById('home-icon').addEventListener('click', () => {
+  // Mueve aquí los listeners que estaban antes arriba
+  document.getElementById('home-icon')?.addEventListener('click', () => {
     window.location.href = "index.html";
   });
-  
 
-//funcion para boton notificaiones
-document.getElementById('notification-icon').addEventListener('click', () => {
+  document.getElementById('notification-icon')?.addEventListener('click', () => {
     alert("No tienes notificaciones por ahora.");
   });
 
-
-  
-// Cerrar sesión y redirigir a login.html
-document.getElementById('logout-btn').addEventListener('click', async () => {
+  document.getElementById('logout-btn')?.addEventListener('click', async () => {
     const { error } = await supabaseClient.auth.signOut();
     if (error) {
       console.error('Error al cerrar sesión:', error.message);
     } else {
-      window.location.href = "login.html"; // Redirigir a la pantalla de login
+      window.location.href = "login.html";
     }
   });
 
+  document.getElementById("create-group-btn")?.addEventListener("click", createGroup);
 
-
-document.addEventListener("DOMContentLoaded", async () => {
-    const user = await supabaseClient.auth.getUser();
-    if (!user.data.user) {
-        window.location.href = "login.html"; // Redirigir si no está autenticado
-        return;
-    }
-
-    loadGroups(); // Cargar los grupos
-
-    document.getElementById("create-group-btn").addEventListener("click", createGroup);
+  loadGroups(); // ← esto sigue igual
 });
 
 async function loadGroups() {
-    const { data, error } = await supabaseClient.from("groups").select("*");
+    const { data, error } = await supabaseClient
+  .from("groups")
+  .select("*, profiles:owner_id(username)");
+
     if (error) {
         console.error("Error al cargar grupos:", error.message);
         return;
@@ -53,12 +47,18 @@ async function loadGroups() {
     data.forEach(group => {
         const div = document.createElement("div");
         div.classList.add("group-card");
-        div.innerHTML = `
-            <h3>${group.name}</h3>
-            <p>📅 Creado el: ${new Date(group.created_at).toLocaleDateString()}</p>
-            <button onclick="joinGroup('${group.id}')">Unirse</button>
-        `;
-        container.appendChild(div);
+        const owner = group.profiles?.username || "Desconocido";
+
+  div.innerHTML = `
+    <h3>${group.name}</h3>
+    <div class="group-meta">
+      <span>📅 Creado el: ${new Date(group.created_at).toLocaleDateString()}</span>
+      <span>👑 Propietario: @${owner}</span>
+    </div>
+    <button onclick="joinGroup('${group.id}')">Unirse</button>
+  `;
+
+  container.appendChild(div);
     });
 
     console.log("✅ Grupos cargados:", data);
@@ -145,6 +145,11 @@ async function joinGroup(groupId) {
   });
   
   // Switch entre vistas
+  document.getElementById("switch-games").addEventListener("click", () => {
+  setActiveSwitch("games");
+  showGamesView();
+});
+
   document.getElementById("switch-chats").addEventListener("click", () => {
     setActiveSwitch("chats");
     showChatView();
@@ -154,17 +159,47 @@ async function joinGroup(groupId) {
     setActiveSwitch("members");
     showMembersView();
   });
+
   
-  function setActiveSwitch(view) {
-    document.getElementById("switch-chats").classList.remove("active-switch");
-    document.getElementById("switch-members").classList.remove("active-switch");
+function setActiveSwitch(view) {
+  document.getElementById("switch-games").classList.remove("active-switch");
+  document.getElementById("switch-chats").classList.remove("active-switch");
+  document.getElementById("switch-members").classList.remove("active-switch");
   
-    if (view === "chats") {
-      document.getElementById("switch-chats").classList.add("active-switch");
-    } else {
-      document.getElementById("switch-members").classList.add("active-switch");
-    }
+
+  if (view === "games") {
+    document.getElementById("switch-games").classList.add("active-switch");
+  } else if (view === "chats") {
+    document.getElementById("switch-chats").classList.add("active-switch");
+  } else if (view === "members") {
+    document.getElementById("switch-members").classList.add("active-switch");
   }
+}
+
+function showGamesView() {
+  const modalBody = document.getElementById("modal-body");
+
+  modalBody.innerHTML = `
+    <h3>📅 Partidos del Grupo</h3>
+    <button id="create-game-inside-group" style="margin-bottom: 15px; padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+      ➕ Crear Partido
+    </button>
+    <div class="group-games-list">
+      <p style="font-style: italic;">Aquí se mostrarán los partidos de este grupo.</p>
+    </div>
+  `;
+
+  document.getElementById("create-game-inside-group").addEventListener("click", () => {
+    const formContainer = document.getElementById("form-container");
+    const groupField = document.getElementById("group-id-hidden");
+    if (formContainer && groupField) {
+      groupField.value = currentGroupId; // 👈 insertamos el grupo actual
+      formContainer.classList.remove("hidden");
+      setTodayDate();
+    }
+  });
+}
+
 
 
   async function loadMessages(groupId) {

@@ -14,6 +14,15 @@
   <div class="spinner"></div>
 </div>
 
+<!-- Alerta personalizada -->
+<div id="custom-alert" class="hidden">
+  <div class="custom-alert-content">
+    <h3>⚠️</h3>
+    <p id="custom-alert-message"></p>
+    <button onclick="closeCustomAlert()">Aceptar</button>
+  </div>
+</div>
+
   <!-- Barra de navegación -->
 <div class="nav-container">
   <i class="fa-solid fa-house" id="home-icon"></i>
@@ -24,9 +33,9 @@
       <a href="profile.html" id="profile-link">
           <img src="profile.jpg" alt="Perfil" id="profile-icon">
       </a>
-      <button id="logout-btn">
-        <i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
+      <button id="logout-btn" class="logout-icon-btn" title="Cerrar sesión">
+  <i class="fa-solid fa-sign-out-alt"></i>
+</button>
   </div>
 </div>
 
@@ -66,16 +75,19 @@
     <label></label>
     <button type="button" id="toggle-sports-btn" style="margin-bottom: 10px;">Deportes Favoritos</button>   
     <div id="favorite-sports-checkboxes" class="sports-checkboxes hidden">
-  <label><input type="checkbox" value="Fútbol"> Fútbol</label>
-  <label><input type="checkbox" value="Pádel"> Pádel</label>
-  <label><input type="checkbox" value="Básquetbol"> Básquetbol</label>
-  <label><input type="checkbox" value="Voleibol"> Voleibol</label>
-  <label><input type="checkbox" value="Handbol"> Handbol</label>
-  <label><input type="checkbox" value="Tenis"> Tenis</label>
-  <label><input type="checkbox" value="Rugby"> Rugby</label>
-  <label><input type="checkbox" value="Hockey"> Hockey</label>
-  <label><input type="checkbox" value="Béisbol"> Béisbol</label>
-  <label><input type="checkbox" value="Ping-Pong"> Ping-Pong</label>
+ <label><input type="checkbox" value="Fútbol"> Fútbol <span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Fútbol 6"> Fútbol 6<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Fútbol 7"> Fútbol 7<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Futsal"> Futsal<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Pádel"> Pádel<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Básquetbol"> Básquetbol<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Voleibol"> Voleibol<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Handbol"> Handbol<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Tenis"> Tenis<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Rugby"> Rugby<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Hockey"> Hockey<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Béisbol"> Béisbol<span class="priority-number"></span></label>
+  <label><input type="checkbox" value="Ping-Pong"> Ping-Pong<span class="priority-number"></span></label>
 </div>
 
       <label>
@@ -85,7 +97,6 @@
       <button type="submit">Guardar Cambios</button>
   </form>
 </div>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="supabase-config.js"></script>
   <script src="profile.js"></script>

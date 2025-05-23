@@ -6,6 +6,16 @@
   <link rel="stylesheet" href="formStyle.css">
 </head>
 <body>
+
+  <!-- Alerta personalizada -->
+<div id="custom-alert" class="hidden">
+  <div class="custom-alert-content">
+    <h3>⚠️</h3>
+    <p id="custom-alert-message"></p>
+    <button onclick="closeCustomAlert()">Aceptar</button>
+  </div>
+</div>
+
   <!-- Formulario para agregar un nuevo juego -->
   <div id="form-container" class="hidden">
     <form id="game-form">
@@ -36,6 +46,8 @@
       <input type="number" id="player-count" placeholder="Cantidad de Jugadores" required min="1">
 
       <input type="number" id="game-value" placeholder="Valor ($)" required>
+
+      <input type="hidden" id="group-id-hidden" name="group-id">
 
             <!-- Botón para alternar configuración avanzada -->
       <button type="button" id="toggle-advanced-btn">⚙️ Configuración Avanzada</button>

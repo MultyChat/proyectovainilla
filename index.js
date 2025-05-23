@@ -41,7 +41,8 @@ document.getElementById('profile-icon').addEventListener('click', () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const user = await getCurrentUser();
+ 
+  const user = await getCurrentUser();
     if (!user) return;
 
     const userId = user.id;
@@ -87,6 +88,15 @@ document.getElementById("tab-created").addEventListener("click", () => {
   document.getElementById("tab-created").classList.add("active-tab");
 });
 
+function showCustomAlert(message) {
+  document.getElementById("custom-alert-message").textContent = message;
+  document.getElementById("custom-alert").classList.remove("hidden");
+}
+
+function closeCustomAlert() {
+  document.getElementById("custom-alert").classList.add("hidden");
+}
+
 async function loadAvailablePlayers() {
   const { data, error } = await supabaseClient
     .from("profiles")
@@ -111,6 +121,9 @@ async function loadAvailablePlayers() {
 
   const iconMap = {
     futbol: "fa-futbol",
+    futbol7: "fa-futbol",
+    futbol6: "fa-futbol",
+    futsal: "fa-futbol",
     basquetbol: "fa-basketball",
     voleibol: "fa-volleyball",
     handbol: "fa-hand-point-up",
@@ -141,7 +154,7 @@ async function toggleMyAvailability() {
       .update({ available_to_play: false, available_sport: null })
       .eq("id", user.id);
   
-    showSuccessMessage("🔴 Ahora estás no disponible para jugar");
+    showSuccessMessage("🔴 Has cancelado tu disponibilidad");
     loadAvailablePlayers();
   } else {
     // ✅ Verificar si ya tiene un partido hoy
@@ -157,7 +170,7 @@ async function toggleMyAvailability() {
     );
   
     if (yaTieneJuegoHoy) {
-      alert("⚠️ Ya te encuentras en un partido hoy, prioriza este partido por favor.");
+      showCustomAlert("Ya te encuentras en un partido hoy, prioriza al que asistiras por favor.");
       return; // ⛔ No abrir modal ni continuar
     }
   
@@ -185,14 +198,14 @@ async function toggleMyAvailability() {
 
   if (!updateError) {
     loadAvailablePlayers(); // actualizar contador global
-    showSuccessMessage(`Ahora estás ${isNowAvailable ? `🟢 disponible para jugar ${selectedSport}` : "🔴 no disponible"}`);
+    showSuccessMessage(`${isNowAvailable ? `🟢 disponible para jugar ${selectedSport}` : "🔴 Has cancelado tu disponibilidad"}`);
   }
 }
 
 document.getElementById("confirm-sport-btn").addEventListener("click", async () => {
   const sport = document.getElementById("sport-select").value;
   if (!sport || sport === "Selecciona un deporte") {
-    alert("⚠️ Debes seleccionar un deporte");
+    showCustomAlert("⚠️ Debes seleccionar un deporte");
     return;
   }
 
@@ -221,7 +234,7 @@ document.getElementById("confirm-sport-btn").addEventListener("click", async () 
       console.warn("♻️ No se actualizó el DOM, recargando...");
       location.reload(); // Fuerza recarga como última opción
     }
-  }, 300);
+  }, 3000);
 });
 
 async function limpiarDisponibilidadSiCorresponde() {
@@ -267,23 +280,6 @@ if (!user || !user.id) {
     loadAvailablePlayers(); // Actualizar contador
   }
 }
-
-document.getElementById("unconfirm-sport-btn").addEventListener("click", async () => {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if (!user) return;
-
-  const { error } = await supabaseClient.from("profiles")
-    .update({ available_to_play: false, available_sport: null })
-    .eq("id", user.id);
-
-  if (error) {
-    console.error("❌ Error al desconfirmar participación:", error.message);
-  } else {
-    document.getElementById("sport-modal").classList.add("hidden");
-    showSuccessMessage("🔴 Has cancelado tu disponibilidad");
-    loadAvailablePlayers(); // actualizar contador
-  }
-});
 
 
 document.getElementById("cancel-sport-btn").addEventListener("click", () => {
@@ -339,7 +335,7 @@ document.getElementById("show-available-btn").addEventListener("click", async ()
       inviteBtn.style.borderRadius = "5px";
       inviteBtn.style.cursor = "pointer";
       inviteBtn.onclick = () => {
-        alert(`🔔 Aún no implementado. Aquí puedes invitar a ${player.username} (${player.available_sport}) a un partido.`); 
+        showCustomAlert(`🔔 Aún no implementado. Aquí puedes invitar a ${player.username} (${player.available_sport}) a un partido.`); 
         // Aquí se puede integrar lógica real más adelante
       };
     
@@ -642,18 +638,51 @@ async function joinGame(gameId) {
   const user = await getCurrentUser();
   if (!user) return;
 
-  const { data: game, error: gameError } = await supabaseClient
+  const { data: selectedGame, error: gameError } = await supabaseClient
     .from('games')
     .select('*')
     .eq('id', gameId)
     .single();
 
-  if (gameError || !game) {
+  if (gameError || !selectedGame) {
     console.error("❌ Error al obtener juego:", gameError?.message);
     return;
   }
 
-  const currentPlayers = Array.isArray(game.players) ? game.players.map(p => String(p)) : [];
+  // Combina fecha y hora del partido a un objeto Date
+  const selectedDateTime = new Date(`${selectedGame.gamedate}T${selectedGame.gametime}`);
+
+  // Buscar otros partidos del mismo día
+  const { data: allGamesToday } = await supabaseClient
+    .from('games')
+    .select('id, gamedate, gametime, players, sportscenter')
+    .eq('gamedate', selectedGame.gamedate);
+
+  const conflictGame = allGamesToday?.find(g => {
+    if (g.id === selectedGame.id) return false;
+    if (!Array.isArray(g.players) || !g.players.includes(user.id)) return false;
+
+    const existingDateTime = new Date(`${g.gamedate}T${g.gametime}`);
+    const diffInMinutes = Math.abs((existingDateTime - selectedDateTime) / (1000 * 60));
+
+    const sameCenter = g.sportscenter === selectedGame.sportscenter;
+
+    // 🔸 Si es en mismo centro deportivo, exigir al menos 60 min de diferencia
+    if (sameCenter) {
+      return diffInMinutes < 60;
+    }
+
+    // 🔸 Si es en distinto centro, bloquear si hay menos de 90 minutos
+    return diffInMinutes < 90;
+
+  });
+
+  if (conflictGame) {
+    showCustomAlert("¡Ey! Ya tienes un partido cerca de esa hora. Mejor no hagas magia... todavía no puedes estar en dos canchas al mismo tiempo 😉");
+    return;
+  }
+
+  const currentPlayers = Array.isArray(selectedGame.players) ? selectedGame.players.map(p => String(p)) : [];
 
   if (currentPlayers.includes(user.id.toString())) {
     console.log("🟡 El usuario ya está en el partido");
@@ -663,18 +692,16 @@ async function joinGame(gameId) {
   currentPlayers.push(user.id.toString());
 
   const { data: updatedGame, error } = await supabaseClient
-  .from('games')
-  .update({ players: currentPlayers })
-  .eq('id', gameId)
-  .select(); // Esto forzará a traer el juego actualizado y lanzará error si RLS lo bloquea
+    .from('games')
+    .update({ players: currentPlayers })
+    .eq('id', gameId)
+    .select();
 
   if (error) {
-    console.error("❌ Error real al unirse al juego:", error.message);
-  } else if (!updatedGame || updatedGame.length === 0) {
-    console.warn("⚠️ La actualización fue bloqueada por RLS o no se devolvió el juego.");
+    console.error("❌ Error al unirse al juego:", error.message);
   } else {
     console.log("✅ Usuario unido al partido:", user.id);
-    safeLoadGames(); // Actualiza vista
+    safeLoadGames();
     loadMyGames();
   }
 }
@@ -743,7 +770,7 @@ async function loadMyGames() {
   
         gameCard.innerHTML = `
             <h3>⚽ ${game.sporttype} (${game.sportcategory})</h3>
-            <p>📍 ${game.sportscenter}</p>
+            <p><i class="fa-solid fa-landmark"></i> ${game.sportscenter}</p>
             <p>📅 ${formatDateToDMY(game.gamedate)} 🕒 ${formatTimeToHM(game.gametime)}</p>
             <p>👥 ${game.players?.length || 0} jugadores inscritos</p>
         `;
@@ -807,7 +834,8 @@ async function loadMyGames() {
         
           joinedGamesContainer.appendChild(myCard);
         }
-        // Mostrar mensajes si están vacíos
+    });
+     // Mostrar mensajes si están vacíos
         // 🔹 Eliminar mensaje si ya hay partidas unidas
         const joinedMessage = joinedGamesContainer.querySelector('.empty-message');
         if (joinedGamesContainer.children.length > 0 && joinedMessage) {
@@ -836,7 +864,6 @@ async function loadMyGames() {
               Tu sección de partidos creados está vacía. ¿Agendamos uno?
             </div>`;
         }        
-    });
   }
 
   function setModalField(value, textId, wrapperId, invalidOptions = []) {
@@ -983,8 +1010,8 @@ async function loadMyGames() {
           </div>
           ${isCreator && profile ? `
             <button class="move-btn" onclick="handlePlayerMove('${id}', '${team}', ${gameId})">
-              ${team === "A" ? "➡️" : "⬅️"}
-            </button>
+            <i class="fa-solid ${team === "A" ? "fa-arrow-right" : "fa-arrow-left"}"></i>
+          </button>
           ` : ""}
         </div>
       `;
@@ -1002,7 +1029,7 @@ async function loadMyGames() {
   
     document.getElementById("players-modal").classList.remove("hidden");
     const colorPickerA = document.getElementById("color-picker-a");
-const colorPickerB = document.getElementById("color-picker-b");
+  const colorPickerB = document.getElementById("color-picker-b");
 
 // Mostrar color actual
 colorPickerA.value = jerseyColors.teamA;
@@ -1044,32 +1071,41 @@ if (isCreator) {
 }
 }  
 
+let moveInProgress = false;
+
 function handlePlayerMove(playerId, currentTeam, gameId) {
-  // ⚠️ Usa gameId como string si fue convertido
+  if (moveInProgress) return; // ⛔ Previene múltiples clics
+  moveInProgress = true;
+
   supabaseClient
     .from('games')
     .select('team_order')
     .eq('id', gameId)
     .single()
-    .then(({ data, error }) => {
+    .then(async ({ data, error }) => {
       if (error || !data) {
         console.error("❌ Error al obtener orden:", error?.message);
+        moveInProgress = false; // 🔁 Rehabilita si falla
         return;
       }
 
       const teamOrder = data.team_order || { teamA: [], teamB: [] };
 
+      // ✅ Eliminar el jugador de ambos equipos antes de mover
+      teamOrder.teamA = teamOrder.teamA.filter(pid => pid !== playerId);
+      teamOrder.teamB = teamOrder.teamB.filter(pid => pid !== playerId);
+
+      // ✅ Insertar en el equipo opuesto
       if (currentTeam === "A") {
-        teamOrder.teamA = teamOrder.teamA.filter(pid => pid !== playerId);
         teamOrder.teamB.push(playerId);
       } else {
-        teamOrder.teamB = teamOrder.teamB.filter(pid => pid !== playerId);
         teamOrder.teamA.push(playerId);
       }
 
-      updateTeamOrder(gameId, teamOrder).then(() => {
-        showPlayersModal(gameId); // Recargar modal con nuevo orden
-      });
+      await updateTeamOrder(gameId, teamOrder);
+      moveInProgress = false;
+
+      showPlayersModal(gameId); // Recargar con nuevo orden
     });
 }
 
@@ -1168,7 +1204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadSportscentersCarousel() {
   const { data, error } = await supabaseClient
   .from("sportscenters")
-  .select("name, city, type"); // 🔥 incluimos "type"
+  .select("name, city, address, phone, type");
 
   if (error) {
     console.error("❌ Error al cargar centros:", error.message);
@@ -1191,13 +1227,55 @@ async function loadSportscentersCarousel() {
     } else if (center.type === "cancha") {
       iconPath = "imagenes/canchas/sportscenter-icon-cancha.png";
     }
-  
     card.innerHTML = `
-      <img src="${iconPath}" class="sportscenter-icon" alt="Icono Centro Deportivo">
-      <h3>${center.name}</h3>
-      <p>${center.city || "Ciudad desconocida"}</p>
-    `;
+  <img src="${iconPath}" class="sportscenter-icon" alt="Icono Centro Deportivo">
+  <h3>${center.name}</h3>
+  <p>${center.city || "Ciudad desconocida"}</p>
+`;
+// 🔴 Aquí agregamos el evento para abrir modal al hacer clic en la tarjeta
+card.addEventListener("click", () => {
+  document.getElementById("center-modal-name").textContent = center.name;
+  document.getElementById("center-modal-address").textContent = center.address || center.city;
+
+  // Llamada
+  const callBtn = document.getElementById("center-call-btn");
+  callBtn.href = `tel:${center.phone || ""}`;
+  callBtn.textContent = `📞 Llamar${center.phone ? ` (${center.phone})` : ''}`;
+  callBtn.style.pointerEvents = center.phone ? "auto" : "none";
+  callBtn.style.backgroundColor = center.phone ? "#28a745" : "#aaa";
+
+  // Botón para abrir formulario con centro precargado
+  const goBtn = document.getElementById("center-go-btn");
+  goBtn.onclick = () => {
+    const formContainer = document.getElementById("form-container");
+    const input = document.getElementById("sports-center");
+    if (formContainer && input) {
+      input.value = center.name;
+      formContainer.classList.remove("hidden");
+      setTodayDate();
+      document.getElementById("center-modal").classList.add("hidden");
+    }
+  };
+  document.getElementById("center-close-btn").addEventListener("click", () => {
+  document.getElementById("center-modal").classList.add("hidden");
+});
+
+  document.getElementById("center-modal").classList.remove("hidden");
+});
+
+container.appendChild(card);
   
+  const mapsQuery = encodeURIComponent(`${center.name}, ${center.address || center.city}`);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+
+  card.innerHTML = `
+    <img src="${iconPath}" class="sportscenter-icon" alt="Icono Centro Deportivo">
+    <h3>${center.name}</h3>
+    <p><a href="${mapsUrl}" target="_blank" style="color:#ccc; text-decoration:underline;">
+      ${center.address || center.city}
+    </a></p>
+  `;
+
     container.appendChild(card);
   });  
   

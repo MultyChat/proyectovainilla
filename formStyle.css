@@ -19,6 +19,53 @@
   background-color: #0056b3;
 }
 
+#custom-alert {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.custom-alert-content {
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 90%;
+  text-align: center; /* ✅ Este ya alinea el texto y ayuda a centrar */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ Esto alinea al centro los elementos, incluyendo el botón */
+  border: 2px solid #ffffff;
+}
+
+.custom-alert-content h3 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #dc3545;
+}
+
+.custom-alert-content button {
+  margin-top: 15px;
+  padding: 8px 18px;
+  background: #28a745;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+
+  /* 🧲 Centramos el botón */
+  align-self: center;
+}
+
+.hidden {
+  display: none !important;
+}
 
 /* Contenedor del formulario */
 #form-container {
@@ -40,6 +87,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  z-index: 3001;
 }
 
   /* Ajustes en dispositivos móviles */

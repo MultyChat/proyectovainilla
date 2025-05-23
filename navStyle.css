@@ -110,3 +110,13 @@
 #logout-btn:hover {
     color: red;
 }  
+
+/* Estilo exclusivo para el botón de logout */
+.logout-icon-btn i {
+  color: #ccc; /* color normal */
+  transition: color 0.3s ease;
+}
+
+.logout-icon-btn:hover i {
+  color: #dc3545; /* rojo al pasar mouse */
+}
