@@ -204,11 +204,18 @@ body {
 /* Contenedor de ambos equipos */
 .teams-container {
   display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-top: 15px;
+  flex-direction: row;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px;
+  scroll-behavior: smooth;
 }
+
+  .team-column {
+  min-width: 270px;
+  flex: 0 0 auto;
+}
+
 
 /* Cada equipo */
 .team-column {

@@ -131,13 +131,25 @@
     box-sizing: border-box; /* Evita que el padding cambie el tamaño */
   }
 
-  /* Solución específica para input tipo date y time */
-  input[type="date"], input[type="time"] {
-    appearance: none; /* Oculta el estilo por defecto del navegador */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 12px; /* Ajuste para el ícono */
-  }
+/* Mejora visual para inputs de fecha y hora */
+input[type="date"], input[type="time"] {
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #999;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 10px;
+  position: relative;
+}
+
+/* Estilo del icono de selector */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);  /* icono blanco */
+  cursor: pointer;
+  margin-left: 5px;
+}
+
 
   /* Evitar problemas en Safari */
   input[type="date"]::-webkit-calendar-picker-indicator,
